@@ -1,1 +1,1 @@
-Nothing there yet.
+# Backend Challenges boilerplate - package.json
