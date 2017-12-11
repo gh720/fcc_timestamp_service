@@ -38,6 +38,31 @@ app.route('/')
 		  res.sendFile(process.cwd() + '/views/index.html');
     })
 
+app.route('/:what')
+    .get(function(req,res) {
+      var months = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ];  
+      var what = req.params.what;
+      var unix, natural, date;
+      try {
+        if (what.match(/^\d+$/)) {
+          date = new Date(parseInt(what*1000));
+        }
+        else{
+          date= new Date(Date.parse(what));
+        }
+        unix= date.getTime()/1000;
+        natural = months[date.getMonth()]+ ' ' + ('0'+date.getDate()).substring(-2) + ', '+ (date.getYear()+1900); 
+      }
+      catch (e) {
+        console.log('exception', e)
+        unix=null; natural=null;
+      }
+    res.end(JSON.stringify({ unix:unix, natural:natural }));
+    //res.end('success');
+});
+         
 // Respond not found to all the wrong routes
 app.use(function(req, res, next){
   res.status(404);
